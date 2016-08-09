@@ -16,6 +16,13 @@ class ParallelPlugin(Plugin):
         self.total_nodes = int(os.environ.get('CIRCLE_NODE_TOTAL') or os.environ.get('NODE_TOTAL', 1))
         self.node_index = int(os.environ.get('CIRCLE_NODE_INDEX') or os.environ.get('NODE_INDEX', 0))
 
+    def wantClass(self, cls):
+        try:
+            return self._pick_by_name(cls.__name__)
+        except AttributeError:
+            return None
+        return None
+
     def wantMethod(self, method):
         try:
             cls = method.im_class
